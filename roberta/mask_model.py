@@ -1,7 +1,6 @@
 # Step 1: Import Libraries
-import torch
-from dataset import load_dataset
-from data_prepcess import get_spaced_sequence
+from roberta.dataset import load_dataset
+from roberta.data_prepcess import get_spaced_sequence
 from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForMaskedLM, Trainer, TrainingArguments
 
 class MaskModel:

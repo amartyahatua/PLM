@@ -19,7 +19,7 @@ Clone the repository and install dependencies:
 ```bash
 git clone https://github.com/amartyahatua/PLM.git
 cd PLM
-pip install -r requirements.txt
+pip install -r requirements.txt ```
 
 ---
 

@@ -84,21 +84,17 @@ class ECModel:
 
             training_args = TrainingArguments(
                 output_dir=self.output_directory,
-                num_train_epochs=3,
-                per_device_train_batch_size=8,
-                per_device_eval_batch_size=8,
+                num_train_epochs=self.epochs,
+                per_device_train_batch_size=self.per_device_train_batch_size,
+                per_device_eval_batch_size=self.per_device_eval_batch_size,
                 eval_strategy="epoch",
                 save_strategy="epoch",
-                logging_dir="./logs",
+                logging_dir=f"{self.output_directory}/logs",
                 learning_rate=2e-5,
                 load_best_model_at_end=True,
                 metric_for_best_model="f1",
             )
 
-            # Data collator
-            data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
-
-            # Trainer
             # Trainer
             trainer = Trainer(
                 model=model,
@@ -115,3 +111,5 @@ class ECModel:
             eval_results = trainer.evaluate()
             print("Evaluation Results:", eval_results)
 
+            trainer.save_model( f"{self.model_name}/EC_HP_Prediction_protein_SwissprotDatasets_BalancedSwissprot")
+            self.tokenizer.save_pretrained(f"{self.tokenize_name}/EC_HP_Prediction_protein_SwissprotDatasets_BalancedSwissprot")

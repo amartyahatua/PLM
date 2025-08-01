@@ -20,6 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, default="./roberta-base", help="output directory" )
     parser.add_argument("--epochs", type=int, default=3, help="number of epochs" )
     parser.add_argument("--per_device_train_batch_size", type=int, default=4, help="batch size")
+    parser.add_argument("--per_device_eval_batch_size", type=int, default=8, help="batch size")
     parser.add_argument("--save_strategy", type=str, default="epoch", help="save strategy")
     parser.add_argument("--eval_strategy", type=str, default="no", help="eval strategy")
     parser.add_argument("--logging_steps", type=int, default=20, help="logging steps")

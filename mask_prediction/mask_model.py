@@ -1,8 +1,9 @@
 # Step 1: Import Libraries
 import json
-from mask_prediction.roberta.dataset import load_dataset
-from mask_prediction.roberta.data_prepcess import get_spaced_sequence
+from dataset import load_dataset
+from data_prepcess import get_spaced_sequence
 from hp_finetune import hp_space
+from transformers import EsmTokenizer, EsmForMaskedLM
 from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForMaskedLM, Trainer, TrainingArguments
 
 
@@ -11,8 +12,14 @@ class MaskModel:
         self.data_collator = None
         self.tokenized_dataset_test = None
         self.tokenized_dataset_train = None
-
-        self.tokenizer = AutoTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
+        self.model_name = args.model
+        self.tokenize_name =args.tokenizer
+        if 'esm' in self.model_name:
+            self.tokenizer = EsmTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
+            self.model = EsmForMaskedLM.from_pretrained(args.model)
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained(self.tokenize_name, do_lower_case=False)
+            self.model = AutoModelForMaskedLM.from_pretrained(self.model_name)
         self.mlm_probability = args.mlm_probability
         self.output_directory = args.output_dir
         self.train_data_path = args.train_csv_path
@@ -24,7 +31,6 @@ class MaskModel:
         self.tokenize_name = args.tokenizer
         self.eval_strategy = args.eval_strategy
         self.logging_steps = args.logging_steps
-        self.model = AutoModelForMaskedLM.from_pretrained(self.model_name)
 
     def tokenize_fn(self, examples):
         """
@@ -70,9 +76,10 @@ class MaskModel:
             logging_dir=f"../{self.model_name}/logs"
         )
 
+
         # Step 10: Trainer
         trainer = Trainer(
-            model=self.model_init,
+            model=self.model,
             args=training_args,
             train_dataset=self.tokenized_dataset_train,
             eval_dataset=self.tokenized_dataset_test,
@@ -80,50 +87,14 @@ class MaskModel:
             data_collator=self.data_collator
         )
 
-        best_trial = trainer.hyperparameter_search(
-            direction="minimize",  # minimize loss
-            backend="optuna",  # or "ray", "sigopt"
-            hp_space=hp_space,
-            n_trials=10  # number of trials
-        )
-
-        # Save the best hyperparameters
-        print("Best trial:", best_trial)
-
-        best_hp_path = f"{self.model_name}_hp.json"
-        with open(best_hp_path, "w") as json_file:
-            json.dump(best_trial, json_file, indent=4)
-
-        best_training_args = TrainingArguments(
-            output_dir=self.output_directory,
-            num_train_epochs=best_trial["num_train_epochs"],
-            weight_decay=best_trial["weight_decay"],
-            per_device_train_batch_size=best_trial['per_device_train_batch_size'],
-            save_strategy=self.save_strategy,
-            eval_strategy=self.eval_strategy,
-            logging_steps=self.logging_steps,
-            logging_dir=f"../{self.model_name}/logs",
-            learning_rate=best_trial["learning_rate"],
-        )
-
-        # Step 10: Trainer
-        final_trainer = Trainer(
-            model=self.model,
-            args=best_training_args,
-            train_dataset=self.tokenized_dataset_train,
-            eval_dataset=self.tokenized_dataset_test,
-            tokenizer=self.tokenizer,
-            data_collator=self.data_collator
-        )
-
         # Step 11: Train
-        final_trainer.train()
+        trainer.train()
 
         # Step 12: Final evaluation
         eval_results = trainer.evaluate()
         print(f"\n✅ Final eval loss: {eval_results['eval_loss']:.4f}")
 
         # Step 13: Save model
-        trainer.save_model(f"{self.model_name}/finetuned_protein_SwissprotDatasets_BalancedSwissprot")
-        self.tokenizer.save_pretrained(f"{self.tokenize_name}/finetuned_protein_SwissprotDatasets_BalancedSwissprot")
+        trainer.save_model(f"{self.model_name}/MASKED_finetuned_protein_SwissprotDatasets_BalancedSwissprot")
+        self.tokenizer.save_pretrained(f"{self.tokenize_name}/MASKED_finetuned_protein_SwissprotDatasets_BalancedSwissprot")
 

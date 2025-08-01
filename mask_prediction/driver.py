@@ -1,8 +1,11 @@
+import os
 import torch
 import argparse
 import numpy as np
 from mask_model import MaskModel
+from mask_model_hp import MaskModelHP
 
+os.environ["WANDB_DISABLED"] = "true"
 RANDOM_STATE_SEED = 1829873
 np.random.seed(RANDOM_STATE_SEED)
 torch.manual_seed(RANDOM_STATE_SEED)
@@ -22,12 +25,20 @@ if __name__ == "__main__":
     parser.add_argument("--save_strategy", type=str, default="epoch", help="save strategy")
     parser.add_argument("--eval_strategy", type=str, default="no", help="eval strategy")
     parser.add_argument("--logging_steps", type=int, default=20, help="logging steps")
-    parser.add_argument("--mlm_probability", type=int, default=0.15, help="mlm probability")
+    parser.add_argument("--mlm_probability", type=float, default=0.15, help="mlm probability")
 
 
     # setup stuff
     # ----------------------------------------------------------------------------------#
+    # Setup and training execution
+    ## With Hyper parameter tuning
     args = parser.parse_args()
-    msk_model = MaskModel(args)
-    msk_model.get_dataset()
-    msk_model.call_trainer()
+    ec_model = MaskModelHP(args)
+    ec_model.get_dataset()
+    ec_model.call_trainer()
+
+    ## Without Hyper parameter tuning
+    # args = parser.parse_args()
+    # ec_model = MaskModel(args)
+    # ec_model.get_dataset()
+    # ec_model.call_trainer()

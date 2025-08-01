@@ -1,15 +1,16 @@
 # Step 1: Import Libraries
-from roberta.dataset import load_dataset
-from roberta.data_prepcess import get_spaced_sequence
-from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForMaskedLM, Trainer, TrainingArguments
+from mask_prediction.roberta.dataset import load_dataset
+from mask_prediction.roberta.data_prepcess import get_spaced_sequence
+from transformers import DataCollatorForLanguageModeling, Trainer, TrainingArguments
+from transformers import EsmTokenizer, EsmForMaskedLM
 
 class MaskModel:
     def __init__(self, args):
         self.data_collator = None
         self.tokenized_dataset_test = None
         self.tokenized_dataset_train = None
-        self.tokenizer = AutoTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
-        self.model = AutoModelForMaskedLM.from_pretrained(args.model)
+        self.tokenizer = EsmTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
+        self.model = EsmForMaskedLM.from_pretrained(args.model)
         self.mlm_probability = args.mlm_probability
         self.output_directory = args.output_dir
         self.train_data_path = args.train_csv_path

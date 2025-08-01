@@ -37,3 +37,19 @@ Clone the repository and install dependencies:
 git clone https://github.com/amartyahatua/PLM.git
 cd PLM
 pip install -r requirements.txt
+
+PLM/
+│
+├── dataset.py               # Data-loading utilities
+├── data_prepcess.py         # Sequence formatting and spacing
+├── hp_finetune.py           # Hyperparameter search space definition
+├── driver.py                # Entry point for MLM training + HP tuning
+├── ec_classification.py     # Script for EC classification training & evaluation
+├── mask_model.py            # Encapsulates the MaskModel class
+├── requirements.txt         # Project dependencies
+│
+└── SwissprotDatasets/
+    └── BalancedSwissprot/
+        ├── train.csv        # Balanced Swiss‑Prot sequences + EC labels
+        └── valid.csv        # Validation set with similar structure
+

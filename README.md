@@ -8,7 +8,7 @@ This repository enables fine-tuning of Transformer-based models like **RoBERTa**
 
 - [Features](#-features)  
 - [Installation](#-installation)  
-- [Data Structure](#-data-structure)  
+- [File-structure](#-File-structure)  
 - [Available Scripts](#-available-scripts)  
   - EC Classification  
   - Masked LM Finetuning  
@@ -38,6 +38,7 @@ git clone https://github.com/amartyahatua/PLM.git
 cd PLM
 pip install -r requirements.txt
 
+## File-structure
 PLM/
 │
 ├── dataset.py               # Data-loading utilities
@@ -53,3 +54,17 @@ PLM/
         ├── train.csv        # Balanced Swiss‑Prot sequences + EC labels
         └── valid.csv        # Validation set with similar structure
 
+## EC Number Classification
+
+python driver.py \
+  --train_csv_path ./SwissprotDatasets/BalancedSwissprot/train.csv \
+  --test_csv_path ./SwissprotDatasets/BalancedSwissprot/valid.csv \
+  --model roberta-base \
+  --tokenizer roberta-base \
+  --output_dir ./results \
+  --mlm_probability 0.15 \
+  --epochs 3 \
+  --per_device_train_batch_size 16 \
+  --eval_strategy epoch \
+  --save_strategy epoch \
+  --logging_steps 100

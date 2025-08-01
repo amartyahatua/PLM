@@ -3,6 +3,7 @@ import torch
 import argparse
 import numpy as np
 from ec_model import ECModel
+from ec_model_hp import ECModelHP
 os.environ["WANDB_DISABLED"] = "true"
 
 RANDOM_STATE_SEED = 1829873
@@ -14,9 +15,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="EC Prediction Training Script")
     parser.add_argument("--train_csv_path", type=str, default="../data/train.csv", help="Path to the training CSV file")
     parser.add_argument("--test_csv_path", type=str, default="../data/valid.csv", help="Path to the test CSV file" )
-    parser.add_argument("--tokenizer", type=str, default="FacebookAI/roberta-base", help="tokenizer")
-    parser.add_argument("--model", type=str, default="FacebookAI/roberta-base", help="model")
-    parser.add_argument("--output_dir", type=str, default="./FacebookAI/roberta-base", help="output directory" )
+    parser.add_argument("--tokenizer", type=str, default="roberta-base", help="tokenizer")
+    parser.add_argument("--model", type=str, default="roberta-base", help="model")
+    parser.add_argument("--output_dir", type=str, default="./roberta-base", help="output directory" )
     parser.add_argument("--epochs", type=int, default=3, help="number of epochs" )
     parser.add_argument("--per_device_train_batch_size", type=int, default=4, help="batch size")
     parser.add_argument("--save_strategy", type=str, default="epoch", help="save strategy")
@@ -26,6 +27,13 @@ if __name__ == "__main__":
 
 
     # Setup and training execution
+    ## With Hyper parameter tuning
+    # args = parser.parse_args()
+    # ec_model = ECModelHP(args)
+    # ec_model.get_dataset()
+    # ec_model.call_trainer()
+
+    ## Without Hyper parameter tuning
     args = parser.parse_args()
     ec_model = ECModel(args)
     ec_model.get_dataset()

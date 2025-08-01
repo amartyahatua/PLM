@@ -56,7 +56,7 @@ def load_ec_dataset(df, tokenizer, max_length=512):
     """
     # Encode EC numbers into integer labels
     label_encoder = LabelEncoder()
-    df['label'] = label_encoder.fit_transform(df['EC'])
+    df['labels'] = label_encoder.fit_transform(df['EC'])
 
     # Tokenize sequences
     def tokenize_function(examples):
@@ -67,7 +67,7 @@ def load_ec_dataset(df, tokenizer, max_length=512):
             max_length=max_length
         )
 
-    dataset = Dataset.from_pandas(df[['spaced_sequence', 'label']])
+    dataset = Dataset.from_pandas(df[['spaced_sequence', 'labels']])
     dataset = dataset.map(tokenize_function, batched=True)
 
     return dataset, label_encoder

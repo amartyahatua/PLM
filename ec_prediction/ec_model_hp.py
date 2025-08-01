@@ -5,7 +5,7 @@ from dataset import load_dataset
 from data_prepcess import get_spaced_sequence, load_ec_dataset
 from hp_finetune import hp_space
 
-class MaskModelHP:
+class ECModelHP:
     """
         A class to fine-tune a masked language model (MLM) such as RoBERTa /
         ModernBERT / Distilbert / ESM / on protein sequence data for enzyme
@@ -65,11 +65,11 @@ class MaskModelHP:
         """
         df_train, df_test = load_dataset(self.train_data_path, self.test_data_path)
         df_train, df_test = get_spaced_sequence(df_train, df_test)
-        self.tokenized_dataset_train = df_train.map(self.tokenize_fn, batched=True)
-        self.tokenized_dataset_test = df_test .map(self.tokenize_fn, batched=True)
+        df_train, self.label_encoder = load_ec_dataset(df_train, self.tokenizer)
+        df_test, _ = load_ec_dataset(df_test, self.tokenizer)
 
-        self.tokenized_dataset_train, self.label_encoder = load_ec_dataset(self.tokenized_dataset_train, self.tokenizer)
-        self.tokenized_dataset_test, _ = load_ec_dataset(self.tokenized_dataset_test, self.tokenizer)
+        self.tokenized_dataset_train = df_train.map(self.tokenize_fn, batched=True)
+        self.tokenized_dataset_test = df_test.map(self.tokenize_fn, batched=True)
 
     def model_init(self):
         """

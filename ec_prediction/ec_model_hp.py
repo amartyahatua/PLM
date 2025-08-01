@@ -1,10 +1,9 @@
 import json
-import torch
+from transformers import EsmTokenizer, EsmForMaskedLM
+from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForMaskedLM, Trainer, TrainingArguments
 from dataset import load_dataset
 from data_prepcess import get_spaced_sequence, load_ec_dataset
-from transformers import AutoTokenizer, DataCollatorForLanguageModeling, AutoModelForMaskedLM, Trainer, TrainingArguments
 from hp_finetune import hp_space
-from transformers import EsmTokenizer, EsmForMaskedLM
 
 class MaskModelHP:
     """
@@ -204,5 +203,5 @@ class MaskModelHP:
         print(f"\n✅ Final eval loss: {eval_results['eval_loss']:.4f}")
 
         # Step 10: Save model
-        final_trainer.save_model(f"{self.model_name}/finetuned_protein_SwissprotDatasets_BalancedSwissprot")
-        self.tokenizer.save_pretrained(f"{self.tokenize_name}/finetuned_protein_SwissprotDatasets_BalancedSwissprot")
+        final_trainer.save_model(f"{self.model_name}/EC_Prediction_protein_SwissprotDatasets_BalancedSwissprot")
+        self.tokenizer.save_pretrained(f"{self.tokenize_name}/EC_Prediction_protein_SwissprotDatasets_BalancedSwissprot")

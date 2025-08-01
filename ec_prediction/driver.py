@@ -1,13 +1,14 @@
+import os
 import torch
 import argparse
 import numpy as np
 from ec_model import ECModel
+os.environ["WANDB_DISABLED"] = "true"
 
 RANDOM_STATE_SEED = 1829873
 np.random.seed(RANDOM_STATE_SEED)
 torch.manual_seed(RANDOM_STATE_SEED)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="EC Prediction Training Script")

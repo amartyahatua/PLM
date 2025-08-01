@@ -70,7 +70,6 @@ class ECModel:
         df_train, self.label_encoder = load_ec_dataset(df_train, self.tokenizer)
         df_test, _ = load_ec_dataset(df_test, self.tokenizer)
 
-
         self.tokenized_dataset_train = df_train.map(self.tokenize_fn, batched=True)
         self.tokenized_dataset_test = df_test.map(self.tokenize_fn, batched=True)
 

@@ -21,6 +21,8 @@ git clone https://github.com/amartyahatua/PLM.git
 cd PLM
 pip install -r requirements.txt
 
+---
+
 ## **File-structure** 
 PLM/
 │
@@ -36,6 +38,8 @@ PLM/
     └── BalancedSwissprot/
         ├── train.csv        # Balanced Swiss‑Prot sequences + EC labels
         └── valid.csv        # Validation set with similar structure
+
+---
 
 ## **Example: EC Number Classification**
 

@@ -23,7 +23,8 @@ pip install -r requirements.txt ```
 
 ---
 
-## **File-structure** 
+## Installation
+
 PLM/
 │
 ├── dataset.py               # Data-loading utilities

@@ -83,7 +83,7 @@ class ECModel:
             )
 
             training_args = TrainingArguments(
-                output_dir="./results",
+                output_dir=self.output_directory,
                 num_train_epochs=3,
                 per_device_train_batch_size=8,
                 per_device_eval_batch_size=8,

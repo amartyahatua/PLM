@@ -25,8 +25,11 @@ def load_dataset(train_data_path, test_data_path):
         3. Keeps only the first 1000 rows of training data and the first 500 rows of testing data
            for faster experimentation.
     """
-    train_df = pd.read_csv(train_data_path)
-    test_df = pd.read_csv(test_data_path)
+    #train_df = pd.read_csv(train_data_path)
+    #test_df = pd.read_csv(test_data_path)
+    
+    train_df = pd.read_pickle(train_data_path).rename(columns={'sequence' : 'Sequence'})
+    test_df = pd.read_pickle(test_data_path).rename(columns={'sequence' : 'Sequence'})
 
     train_df = train_df[train_df['Sequence'].str.len() > 20]  # remove short sequences
     test_df = test_df[test_df['Sequence'].str.len() > 20]  # remove short sequences

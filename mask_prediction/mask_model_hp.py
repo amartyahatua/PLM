@@ -165,21 +165,22 @@ class MaskModelHP:
         # Step 5: Save the best hyperparameters
         print("Best trial:", best_trial)
 
-        best_hp_path = f"{self.model_name}_hp.json"
+        best_hp_path = f"{self.output_directory}/{self.model_name}_hp.json"
         with open(best_hp_path, "w") as json_file:
             json.dump(best_trial, json_file, indent=4)
 
+        best_hyperparams = best_trial.hyperparameters
         # Step 6: Set best training arguments
         best_training_args = TrainingArguments(
             output_dir=self.output_directory,
-            num_train_epochs=best_trial["num_train_epochs"],
-            weight_decay=best_trial["weight_decay"],
-            per_device_train_batch_size=best_trial['per_device_train_batch_size'],
+            num_train_epochs=best_hyperparams["num_train_epochs"],
+            weight_decay=best_hyperparams["weight_decay"],
+            per_device_train_batch_size=best_hyperparams['per_device_train_batch_size'],
             save_strategy=self.save_strategy,
             eval_strategy=self.eval_strategy,
             logging_steps=self.logging_steps,
             logging_dir=f"../{self.model_name}/logs",
-            learning_rate=best_trial["learning_rate"],
+            learning_rate=best_hyperparams["learning_rate"],
         )
 
         # Step 7: Set the trainer
@@ -200,5 +201,5 @@ class MaskModelHP:
         print(f"\n✅ Final eval loss: {eval_results['eval_loss']:.4f}")
 
         # Step 10: Save model
-        final_trainer.save_model(f"{self.model_name}/MASKED_HP_Prediction_protein_SwissprotDatasets_BalancedSwissprot")
-        self.tokenizer.save_pretrained(f"{self.tokenize_name}/MASKED_HP_Prediction_protein_SwissprotDatasets_BalancedSwissprot")
+        final_trainer.save_model(f"{self.output_directory}/{self.model_name}/MASKED_HP_model")
+        self.tokenizer.save_pretrained(f"{self.output_directory}/{self.tokenize_name}/MASKED_HP_tokenizer")

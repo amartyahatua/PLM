@@ -95,6 +95,6 @@ class MaskModel:
         print(f"\n✅ Final eval loss: {eval_results['eval_loss']:.4f}")
 
         # Step 13: Save model
-        trainer.save_model(f"{self.model_name}/MASKED_finetuned_protein_SwissprotDatasets_BalancedSwissprot")
-        self.tokenizer.save_pretrained(f"{self.tokenize_name}/MASKED_finetuned_protein_SwissprotDatasets_BalancedSwissprot")
+        trainer.save_model(f"{self.output_directory}/{self.model_name}/MASKED_MLM_finetuned_model")
+        self.tokenizer.save_pretrained(f"{self.output_directory}/{self.tokenize_name}/MASKED_MLM_finetuned_model")
 

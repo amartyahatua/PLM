@@ -142,6 +142,8 @@ class MaskModelHP:
             eval_strategy=self.eval_strategy,
             logging_steps=self.logging_steps,
             logging_dir=f"../{self.model_name}/logs",
+            device_map="auto",
+            fp16=True
         )
 
         # Step 3: Set trainer

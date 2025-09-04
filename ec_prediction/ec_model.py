@@ -93,6 +93,8 @@ class ECModel:
                 learning_rate=2e-5,
                 load_best_model_at_end=True,
                 metric_for_best_model="f1",
+                device_map="auto",
+                fp16=True
             )
 
             # Trainer

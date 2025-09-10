@@ -73,7 +73,9 @@ class MaskModel:
             save_strategy=self.save_strategy,
             eval_strategy=self.eval_strategy,
             logging_steps=self.logging_steps,
-            logging_dir=f"../{self.model_name}/logs"
+            logging_dir=f"../{self.model_name}/logs",
+            device_map="auto",
+            fp16=True
         )
 
 

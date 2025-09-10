@@ -51,7 +51,9 @@ class MaskModel:
         df_train, df_test = load_dataset(self.train_data_path, self.test_data_path)
         df_train, df_test = get_spaced_sequence(df_train, df_test)
         self.tokenized_dataset_train = df_train.map(self.tokenize_fn, batched=True)
+        #assert all(len(t["input_ids"]) > 0 for t in self.tokenized_dataset_train)
         self.tokenized_dataset_test = df_test .map(self.tokenize_fn, batched=True)
+        #assert all(len(t["input_ids"]) > 0 for t in self.tokenized_dataset_test)
 
     def model_init(self):
         return self.model
@@ -86,7 +88,8 @@ class MaskModel:
             train_dataset=self.tokenized_dataset_train,
             eval_dataset=self.tokenized_dataset_test,
             tokenizer=self.tokenizer,
-            data_collator=self.data_collator
+            data_collator=self.data_collator,
+            fp16=True
         )
 
         # Step 11: Train

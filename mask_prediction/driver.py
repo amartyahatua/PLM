@@ -10,6 +10,7 @@ RANDOM_STATE_SEED = 1829873
 np.random.seed(RANDOM_STATE_SEED)
 torch.manual_seed(RANDOM_STATE_SEED)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+torch.set_float32_matmul_precision('high')
 
 
 

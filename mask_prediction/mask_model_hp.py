@@ -15,7 +15,7 @@ class MaskModelHP:
         self.data_collator = None
         self.tokenized_dataset_test = None
         self.tokenized_dataset_train = None
-        self.model_name = args.model
+        self.model_name = args.model.replace('/', '_')
         if 'esm' in self.model_name:
             self.tokenizer = EsmTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
             self.model = EsmForMaskedLM.from_pretrained(args.model)
@@ -29,7 +29,7 @@ class MaskModelHP:
         self.epochs = args.epochs
         self.per_device_train_batch_size = args.per_device_train_batch_size
         self.save_strategy = args.save_strategy
-        self.tokenize_name = args.tokenizer
+        self.tokenize_name = args.tokenizer.replace('/', '_')
         self.eval_strategy = args.eval_strategy
         self.logging_steps = args.logging_steps
 

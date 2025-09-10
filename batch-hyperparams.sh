@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=hyperparams_ESM
-#SBATCH --partition=hoarfrost_p
-#SBATCH --gres=gpu:A100:2
+#SBATCH --job-name=hyperparams_ModernBERT
+#SBATCH --partition=gpu_p
+#SBATCH --gres=gpu:A100:1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=128gb
@@ -17,6 +17,10 @@ cd $SLURM_SUBMIT_DIR
 ml Python/3.11.3-GCCcore-12.3.0
 ml CUDA/12.1.1
 
+#default is answerdotai/ModernBERT-base
+#--model facebook/esm2_t30_150M_UR50D \
+#--model roberta-base
+
 source /scratch/ab18558/PLM/env/bin/activate 
 
 for n in {1..5};
@@ -24,9 +28,7 @@ do
 	python mask_prediction/driver.py \
   	--train_csv_path ./data/data/GTDB/old/GTDB_dataset/Amartya_small/split_$n/train.pkl \
   	--test_csv_path ./data/data/GTDB/old/GTDB_dataset/Amartya_small/split_$n/valid.pkl \
-  	--model facebook/esm2_t6_8M_UR50D \
-  	--tokenizer facebook/esm2_t6_8M_UR50D \
-  	--output_dir ./hyperparams/ESM/split_$n/ \
+  	--output_dir ./hyperparams/ModernBERT/split_$n/ \
   	--mlm_probability 0.15 \
   	--epochs 100 \
   	--per_device_train_batch_size 16 \

@@ -25,17 +25,22 @@ def load_dataset(train_data_path, test_data_path):
         3. Keeps only the first 1000 rows of training data and the first 500 rows of testing data
            for faster experimentation.
     """
-    #train_df = pd.read_csv(train_data_path)
-    #test_df = pd.read_csv(test_data_path)
-    
-    train_df = pd.read_pickle(train_data_path).rename(columns={'sequence' : 'Sequence'})
-    test_df = pd.read_pickle(test_data_path).rename(columns={'sequence' : 'Sequence'})
+
+    if train_data_path.__contains__('.csv'):
+        train_df = pd.read_csv(train_data_path)
+        test_df = pd.read_csv(test_data_path)
+    elif train_data_path.__contains__('.tsv'):
+        train_df = pd.read_csv(train_data_path, sep='\t')
+        test_df = pd.read_csv(test_data_path, sep='\t')
+    else:
+        train_df = pd.read_pickle(train_data_path).rename(columns={'sequence' : 'Sequence'})
+        test_df = pd.read_pickle(test_data_path).rename(columns={'sequence' : 'Sequence'})
 
     train_df = train_df[train_df['Sequence'].str.len() > 20]  # remove short sequences
     test_df = test_df[test_df['Sequence'].str.len() > 20]  # remove short sequences
 
     # Get a small dataset
-    # train_df = train_df.iloc[0:1000,:]
-    # test_df = test_df.iloc[0:500,:]
+    #train_df = train_df.iloc[0:1000,:]
+    #test_df = test_df.iloc[0:500,:]
 
     return train_df, test_df

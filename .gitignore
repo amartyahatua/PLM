@@ -2,3 +2,5 @@ jobs/
 env/
 data/
 test/
+*checkpoint*
+*run*

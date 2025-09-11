@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=hyperparams_ModernBERT
+#SBATCH --job-name=hyperparams_ESM
 #SBATCH --partition=gpu_p
 #SBATCH --gres=gpu:A100:1
 #SBATCH --ntasks=1
@@ -23,12 +23,14 @@ ml CUDA/12.1.1
 
 source /scratch/ab18558/PLM/env/bin/activate 
 
-for n in {1..5};
+for n in {2..5};
 do
 	python mask_prediction/driver.py \
   	--train_csv_path ./data/data/GTDB/old/GTDB_dataset/Amartya_small/split_$n/train.pkl \
   	--test_csv_path ./data/data/GTDB/old/GTDB_dataset/Amartya_small/split_$n/valid.pkl \
-  	--output_dir ./hyperparams/ModernBERT/split_$n/ \
+	--model facebook/esm2_t30_150M_UR50D \
+	--tokenizer facebook/esm2_t30_150M_UR50D \
+  	--output_dir ./hyperparams/ESM/split_$n/ \
   	--mlm_probability 0.15 \
   	--epochs 100 \
   	--per_device_train_batch_size 16 \

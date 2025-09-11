@@ -16,10 +16,10 @@ class MaskModel:
         self.tokenize_name =args.tokenizer
         if 'esm' in self.model_name:
             self.tokenizer = EsmTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
-            self.model = EsmForMaskedLM.from_pretrained(args.model)
+            self.model = EsmForMaskedLM.from_pretrained(args.model, device_map='auto')
         else:
             self.tokenizer = AutoTokenizer.from_pretrained(self.tokenize_name, do_lower_case=False)
-            self.model = AutoModelForMaskedLM.from_pretrained(self.model_name)
+            self.model = AutoModelForMaskedLM.from_pretrained(self.model_name, device_map='auto')
         self.mlm_probability = args.mlm_probability
         self.output_directory = args.output_dir
         self.train_data_path = args.train_csv_path

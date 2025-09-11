@@ -1,0 +1,11 @@
+[
+    "2",
+    1.4271477460861206,
+    {
+        "learning_rate": 3.141078603072303e-05,
+        "num_train_epochs": 4,
+        "per_device_train_batch_size": 16,
+        "weight_decay": 0.06631848719449658
+    },
+    null
+]

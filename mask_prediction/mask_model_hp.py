@@ -18,10 +18,10 @@ class MaskModelHP:
         self.model_name = args.model.replace('/', '_')
         if 'esm' in self.model_name:
             self.tokenizer = EsmTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
-            self.model = EsmForMaskedLM.from_pretrained(args.model)
+            self.model = EsmForMaskedLM.from_pretrained(args.model, device_map='auto')
         else:
             self.tokenizer = AutoTokenizer.from_pretrained(args.tokenizer, do_lower_case=False)
-            self.model = AutoModelForMaskedLM.from_pretrained(args.model)
+            self.model = AutoModelForMaskedLM.from_pretrained(args.model, device_map='auto')
         self.mlm_probability = args.mlm_probability
         self.output_directory = args.output_dir
         self.train_data_path = args.train_csv_path
@@ -142,7 +142,7 @@ class MaskModelHP:
             eval_strategy=self.eval_strategy,
             logging_steps=self.logging_steps,
             logging_dir=f"../{self.model_name}/logs",
-            device_map="auto",
+            #device_map="auto",
             fp16=True
         )
 

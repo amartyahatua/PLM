@@ -23,7 +23,7 @@ ml CUDA/12.1.1
 
 source /scratch/ab18558/PLM/env/bin/activate 
 
-for n in {2..5};
+for n in {1..5};
 do
 	python mask_prediction/driver.py \
   	--train_csv_path ./data/data/GTDB/old/GTDB_dataset/Amartya_small/split_$n/train.pkl \

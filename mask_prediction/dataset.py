@@ -1,6 +1,6 @@
 import pandas as pd
 
-def load_dataset(train_data_path, test_data_path):
+def load_dataset(train_data_path, test_data_path, test_mode=False):
     """
     Loads training and testing protein sequence data from CSV files,
     applies basic filtering, and returns processed DataFrames.
@@ -40,7 +40,8 @@ def load_dataset(train_data_path, test_data_path):
     test_df = test_df[test_df['Sequence'].str.len() > 20]  # remove short sequences
 
     # Get a small dataset
-    train_df = train_df.iloc[0:1000,:]
-    test_df = test_df.iloc[0:500,:]
+    if test_mode:
+        train_df = train_df.iloc[0:1000,:]
+        test_df = test_df.iloc[0:500,:]
 
     return train_df, test_df
